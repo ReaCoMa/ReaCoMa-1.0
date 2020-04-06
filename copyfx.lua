@@ -16,15 +16,16 @@ else
     full_path = reaper.GetMediaSourceFileName(src, "")
 end
 
-src_envcount = reaper.CountTakeEnvelopes(take)
+reaper.InsertMedia("/Users/james/Nicol-LoopE-M_hpss-h.wav", 3)
+sel_take = reaper.GetActiveTake(item)
+reaper.TakeFX_CopyToTake(take, 0, sel_take, 0, false)
 
-for i=1, src_envcount do
-    src_env = reaper.GetTakeEnvelope(take, i-1)
-    num_points = reaper.CountEnvelopePoints(src_env)
-    for j=1, num_points do
-        reaper.GetEnvelopePoint(src_env, j)
+    src_envcount = reaper.CountTakeEnvelopes(take)
+    points = {}
+    for i=1, src_envcount do
+        src_env = reaper.GetTakeEnvelope(take, i-1)
+        num_points = reaper.CountEnvelopePoints(src_env)
+        for j=1, num_points do 
+            retval, time, val, shape, tension, selected = reaper.GetEnvelopePoint(src_env, j)
+        end
     end
-end
--- reaper.InsertMedia("C:/Users/james/Documents/Max 8/Packages/FluidCorpusManipulation/media/Green-Box641.wav", 3)
--- sel_take = reaper.GetActiveTake(item)
--- reaper.TakeFX_CopyToTake(take, 0, sel_take, 0, false)
