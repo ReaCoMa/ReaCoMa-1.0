@@ -7,6 +7,7 @@ slicing.container = {
     take_ofs = {},
     take_ofs_samples = {},
     item_len_samples = {},
+    item_len = {},
     cmd = {},
     slice_points_string = {},
     tmp = {},
@@ -77,11 +78,12 @@ slicing.get_data = function (item_index, data)
     table.insert(data.item_pos, item_pos)
     table.insert(data.item_pos_samples, item_pos_samples)
     table.insert(data.item_len_samples, item_len_samples)
+    table.insert(data.item_len, item_len)
     table.insert(data.tmp, tmp)
     table.insert(data.playrate, playrate)
 end
 
-slicing.process = function (item_index, data, markers)
+slicing.process = function (item_index, data, markers, slicemode, label, colour)
     -- Thank you to Francesco Cameli for helping me debug this absolute NIGHTMARE --
     local slice_points = utils.commasplit(data.slice_points_string[item_index])
     slice_points = slicing.rm_dup(slice_points)
@@ -113,24 +115,30 @@ slicing.process = function (item_index, data, markers)
             data.sr[item_index]
         )
 
-        if slice == 1 then
-            slice_pos = data.item_pos[item_index] + slice_pos
+        slice_pos = data.item_pos[item_index] + slice_pos
+
+        if slicemode == 1 then
+            
             data.item[item_index] = reaper.SplitMediaItem(
                 data.item[item_index], 
                 slice_pos
             )
         end
 
-        local color = reaper.ColorToNative(30, 128, 100)
-        if markers == 1 then
-            -- reaper.AddProjectMarker2(ReaProject proj, boolean isrgn, number pos, number rgnend, string name, integer wantidx, integer color)
-            reaper.AddProjectMarker2(0, false, slice_pos, 0, '', -1, color)
+        colour_chunks = {}
+        for substring in colour:gmatch("%S+") do
+            table.insert(colour_chunks, tonumber(substring))
+        end
+        local formatted_color = reaper.ColorToNative(colour_chunks[1], colour_chunks[2], colour_chunks[3]) | 0x1000000
 
+        local name = label .. "." .. j
+        if markers == 1 then
+            reaper.AddProjectMarker2(0, false, slice_pos, 0, name, -1, formatted_color )
         end
     end
 end
 
-slicing.process_gate = function(item_index, data, init_state)
+slicing.process_gate = function(item_index, data, init_state, markers, slicemode, label, colour)
     local state = init_state
     local slice_points = utils.commasplit(data.slice_points_string[item_index])
     slice_points = slicing.rm_dup(slice_points)
@@ -165,13 +173,29 @@ slicing.process_gate = function(item_index, data, init_state)
             tonumber(slice_points[j]), 
             data.sr[item_index]
         )
-        
+
         slice_pos = data.item_pos[item_index] + slice_pos  -- account for playback rate
-        reaper.SetMediaItemInfo_Value(data.item[item_index], "B_MUTE", state)
-        data.item[item_index] = reaper.SplitMediaItem(
+
+        if slicemode == 1 then
+            
+            reaper.SetMediaItemInfo_Value(data.item[item_index], "B_MUTE", state)
+            data.item[item_index] = reaper.SplitMediaItem(
             data.item[item_index], 
             slice_pos
         )
+        end
+
+        colour_chunks = {}
+        for substring in colour:gmatch("%S+") do
+            table.insert(colour_chunks, tonumber(substring))
+        end
+        local formatted_color = reaper.ColorToNative(colour_chunks[1], colour_chunks[2], colour_chunks[3]) | 0x1000000
+
+        local name = label .. "." .. j
+        if markers == 1 then
+            reaper.AddProjectMarker2(0, false, slice_pos, 0, name, -1, color)
+        end
+
         if state == 1 then state = 0 else state = 1 end
     end
     reaper.SetMediaItemInfo_Value(data.item[item_index], "B_MUTE", state)

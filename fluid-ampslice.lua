@@ -13,10 +13,10 @@ if num_selected_items > 0 then
 
     local processor = reacoma.params.archetype.ampslice
     reacoma.params.check_params(processor)
-    local param_names = "fastrampup,fastrampdown,slowrampup,slowrampdown,onthreshold,offthreshold,floor,minslicelength,highpassfreq"
+    local param_names = "fastrampup,fastrampdown,slowrampup,slowrampdown,onthreshold,offthreshold,floor,minslicelength,highpassfreq,markers,slicemode,label,colour"
     local param_values = reacoma.params.parse_params(param_names, processor)
 
-    local confirm, user_inputs = reaper.GetUserInputs("Ampslice Parameters", 9, param_names, param_values)
+    local confirm, user_inputs = reaper.GetUserInputs("Ampslice Parameters", 13, param_names, param_values)
     if confirm then
         reacoma.params.store_params(processor, param_names, user_inputs)
 
@@ -30,6 +30,10 @@ if num_selected_items > 0 then
         local floor = params[7]
         local minslicelength = params[8]
         local highpassfreq = params[9]
+        local markers = tonumber(params[10])
+        local slicemode = tonumber(params[11])
+        local label = params[12]
+        local colour = params[13]
 
         local data = reacoma.slicing.container
 
@@ -56,7 +60,7 @@ if num_selected_items > 0 then
         for i=1, num_selected_items do
             reacoma.utils.cmdline(data.cmd[i])
             table.insert(data.slice_points_string, reacoma.utils.readfile(data.tmp[i]))
-            reacoma.slicing.process(i, data)
+            reacoma.slicing.process(i, data, markers, slicemode, label, colour)
         end
 
         reacoma.utils.arrange("reacoma-ampslice")
