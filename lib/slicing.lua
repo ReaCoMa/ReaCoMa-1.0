@@ -123,9 +123,7 @@ slicing.process = function (item_index, data, markers)
 
         local color = reaper.ColorToNative(30, 128, 100)
         if markers == 1 then
-            -- reaper.AddProjectMarker2(ReaProject proj, boolean isrgn, number pos, number rgnend, string name, integer wantidx, integer color)
             reaper.AddProjectMarker2(0, false, slice_pos, 0, '', -1, color)
-
         end
     end
 end
