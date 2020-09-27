@@ -76,6 +76,8 @@ params.archetype = {
         kernelsize = "3",
         threshold = "0.5",
         minslicelength = "2",
+        markers = "0",
+        slice = "1",
     },
 
     ampslice = {

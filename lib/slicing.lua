@@ -81,7 +81,7 @@ slicing.get_data = function (item_index, data)
     table.insert(data.playrate, playrate)
 end
 
-slicing.process = function (item_index, data)
+slicing.process = function (item_index, data, markers)
     -- Thank you to Francesco Cameli for helping me debug this absolute NIGHTMARE --
     local slice_points = utils.commasplit(data.slice_points_string[item_index])
     slice_points = slicing.rm_dup(slice_points)
@@ -112,11 +112,21 @@ slicing.process = function (item_index, data)
             tonumber(slice_points[j]), 
             data.sr[item_index]
         )
-        slice_pos = data.item_pos[item_index] + slice_pos
-        data.item[item_index] = reaper.SplitMediaItem(
-            data.item[item_index], 
-            slice_pos
-        )
+
+        if slice == 1 then
+            slice_pos = data.item_pos[item_index] + slice_pos
+            data.item[item_index] = reaper.SplitMediaItem(
+                data.item[item_index], 
+                slice_pos
+            )
+        end
+
+        local color = reaper.ColorToNative(30, 128, 100)
+        if markers == 1 then
+            -- reaper.AddProjectMarker2(ReaProject proj, boolean isrgn, number pos, number rgnend, string name, integer wantidx, integer color)
+            reaper.AddProjectMarker2(0, false, slice_pos, 0, '', -1, color)
+
+        end
     end
 end
 
