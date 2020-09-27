@@ -55,7 +55,11 @@ params.archetype = {
         skew = "0.0",
         threshback = "1.1",
         threshfwd = "2.0",
-        windowsize = "14"
+        windowsize = "14",
+        markers = "0",
+        slicemode = "1",
+        label = "transient",
+        colour = "252 140 3"
     },
 
     onsetslice = {
@@ -66,6 +70,10 @@ params.archetype = {
         filtersize = "5",
         framedelta = "0",
         fftsettings = "1024 -1 -1",
+        markers = "0",
+        slicemode = "1",
+        label = "onset",
+        colour = "166 51 78"
     },
 
     noveltyslice = {
@@ -76,6 +84,10 @@ params.archetype = {
         kernelsize = "3",
         threshold = "0.5",
         minslicelength = "2",
+        markers = "0",
+        slicemode = "1",
+        label = "novelty",
+        colour = "3 127 252"
     },
 
     ampslice = {
@@ -88,7 +100,11 @@ params.archetype = {
         offthreshold = "-144",
         floor = "-145",
         minslicelength = "2",
-        highpassfreq = "85"
+        highpassfreq = "85",
+        markers = "0",
+        slicemode = "1",
+        label = "amplitude",
+        colour = "60 207 65"
     },
 
     ampgate = {
@@ -105,7 +121,10 @@ params.archetype = {
         lookahead = "5",
         highpassfreq = "100",
         mute = "1",
-        onsetsonly = "0"
+        onsetsonly = "0",
+        markers = "0",
+        slicemode = "1",
+        label = "ampgate"
     }
 }
 
