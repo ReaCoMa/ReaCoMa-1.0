@@ -12,10 +12,10 @@ local num_selected_items = reaper.CountSelectedMediaItems(0)
 if num_selected_items > 0 then
     local processor = reacoma.params.archetype.ampgate
     reacoma.params.check_params(processor)
-    local param_names = "rampup,rampdown,onthreshold,offthreshold,minslicelength,minsilencelength,minlengthabove,minlengthbelow,lookback,lookahead,highpassfreq,mute,onsetsonly"
+    local param_names = "rampup,rampdown,onthreshold,offthreshold,minslicelength,minsilencelength,minlengthabove,minlengthbelow,lookback,lookahead,highpassfreq,mute,onsetsonly,markers,slicemode,label"
     param_values = reacoma.params.parse_params(param_names, processor)
 
-    local confirm, user_inputs = reaper.GetUserInputs("Ampgate Parameters", 13, param_names, param_values)
+    local confirm, user_inputs = reaper.GetUserInputs("Ampgate Parameters", 16, param_names, param_values)
     if confirm then
         reacoma.params.store_params(processor, param_names, user_inputs)
         
@@ -33,6 +33,10 @@ if num_selected_items > 0 then
         local highpassfreq = params[11]
         local mute = tonumber(params[12])
         local onsetsonly = tonumber(params[13])
+        local markers = tonumber(params[14])
+        local slicemode = tonumber(params[15])
+        local label = params[16]
+        local colour = "0 0 0"
 
         local data = reacoma.slicing.container
 
@@ -87,9 +91,9 @@ if num_selected_items > 0 then
             table.insert(data.slice_points_string, dumb_string)
             
             if mute == 1 then
-                reacoma.slicing.process_gate(i, data, start_state)
+                reacoma.slicing.process_gate(i, data, start_state, markers, slicemode, label, colour)
             else
-                reacoma.slicing.process(i, data)
+                reacoma.slicing.process(i, data, markers, slicemode, label, colour)
             end
         end
 
