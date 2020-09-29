@@ -69,7 +69,7 @@ if num_selected_items > 0 then
         end
 
         -- Sort the table --
-        for k, v in reacoma.utils.spairs(data.descriptor_data, function(t,a,b) return t[a] < t[b] end) do
+        for k, _ in reacoma.utils.spairs(data.descriptor_data, function(t,a,b) return t[a] > t[b] end) do
             table.insert(data.sorted_items, k)
         end
 
