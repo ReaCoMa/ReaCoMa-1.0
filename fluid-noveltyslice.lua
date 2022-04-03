@@ -13,7 +13,7 @@ if num_selected_items > 0 then
 
     local processor = reacoma.params.archetype.noveltyslice
     reacoma.params.check_params(processor)
-    local param_names = "feature,threshold,kernelsize,filtersize,fftsettings,minslicelength"
+    local param_names = "algorithm,threshold,kernelsize,filtersize,fftsettings,minslicelength"
     local param_values = reacoma.params.parse_params(param_names, processor)
 
     local confirm, user_inputs = reaper.GetUserInputs("Noveltyslice Parameters", 6, param_names, param_values)
@@ -21,7 +21,7 @@ if num_selected_items > 0 then
         reacoma.params.store_params(processor, param_names, user_inputs)
 
         local params = reacoma.utils.split_comma(user_inputs)
-        local feature = params[1]
+        local algorithm = params[1]
         local threshold = params[2]
         local kernelsize = params[3]
         local filtersize = params[4]
@@ -39,7 +39,7 @@ if num_selected_items > 0 then
             " -maxfftsize " .. reacoma.utils.get_max_fft_size(fftsettings) ..
             " -maxkernelsize " .. kernelsize ..
             " -maxfiltersize " .. filtersize ..
-            " -feature " .. feature .. 
+            " -algorithm " .. algorithm .. 
             " -kernelsize " .. kernelsize .. 
             " -threshold " .. threshold .. 
             " -filtersize " .. filtersize .. 
@@ -48,6 +48,7 @@ if num_selected_items > 0 then
             " -numframes " .. data.item_len_samples[i] .. 
             " -startframe " .. data.take_ofs_samples[i]
             table.insert(data.cmd, cmd)
+            reaper.ShowConsoleMsg(cmd)
         end
 
         for i=1, num_selected_items do
