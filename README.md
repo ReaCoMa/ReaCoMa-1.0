@@ -15,7 +15,11 @@ If you have found ReaCoMa in any way useful, consider supporting the project by 
 
 ## Step 1: Command Line Tools
 
+
+
 All of the number crunching and DSP is performed by the FluCoMa command line tools. You will need to download the appropriate version for your operating system. Precompiled binaries can be found [here](https://www.flucoma.org/download) or you can compile them from [source](https://github.com/flucoma/flucoma-cli).
+
+> :warning: ReaCoMa 1.0 in versions 1.7.0 or greater will only work with **CLI version beta6 or greater**. The parameters for `noveltyslice` changed.
 
 Once you have a set of the binaries you will need to store them in a sensible location that is likely not to change.
 
