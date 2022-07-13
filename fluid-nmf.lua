@@ -23,7 +23,7 @@ if num_selected_items > 0 then
         local params = reacoma.utils.split_comma(user_inputs)
         local components = params[1]
         local iterations = params[2]
-        local fftsettings = params[3]
+        local fftsettings = reacoma.utils.form_fft_string(params[3])
 
         local data = reacoma.layers.container
 
@@ -49,7 +49,8 @@ if num_selected_items > 0 then
                 " -components " .. components .. 
                 " -fftsettings " .. fftsettings ..
                 " -numframes " .. data.item_len_samples[i] .. 
-                " -startframe " .. data.take_ofs_samples[i]
+                " -startframe " .. data.take_ofs_samples[i] ..
+                " -resynthmode " .. 1
             )
         end
 

@@ -25,7 +25,7 @@ if num_selected_items > 0 then
         local threshold = params[2]
         local kernelsize = params[3]
         local filtersize = params[4]
-        local fftsettings = params[5]
+        local fftsettings = reacoma.utils.form_fft_string(params[5])
         local minslicelength = params[6]
         
         local data = reacoma.slicing.container
@@ -36,19 +36,14 @@ if num_selected_items > 0 then
             local cmd = exe .. 
             " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
             " -indices " .. reacoma.utils.wrap_quotes(data.tmp[i]) .. 
-            " -maxfftsize " .. reacoma.utils.get_max_fft_size(fftsettings) ..
-            " -maxkernelsize " .. kernelsize ..
-            " -maxfiltersize " .. filtersize ..
             " -algorithm " .. algorithm .. 
-            " -kernelsize " .. kernelsize .. 
-            " -threshold " .. threshold .. 
-            " -filtersize " .. filtersize .. 
+            " -kernelsize " .. kernelsize .. " " .. kernelsize ..
+            " -filtersize " .. filtersize .. " " .. filtersize ..
             " -fftsettings " .. fftsettings .. 
             " -minslicelength " .. minslicelength ..
             " -numframes " .. data.item_len_samples[i] .. 
             " -startframe " .. data.take_ofs_samples[i]
             table.insert(data.cmd, cmd)
-            reaper.ShowConsoleMsg(cmd)
         end
 
         for i=1, num_selected_items do

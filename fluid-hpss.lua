@@ -24,7 +24,7 @@ if num_selected_items > 0 then
         local hfs = params[1]
         local pfs = params[2]
         local maskingmode = params[3]
-        local fftsettings = params[4]
+        local fftsettings = reacoma.utils.form_fft_string(params[4])
         local hthresh = params[5]
         local pthresh = params[6]
 
@@ -64,18 +64,16 @@ if num_selected_items > 0 then
                 ) 
             end
 
+            -- TODO: this is dumb and has a lot of duplicated code
             if maskingmode == "0" then
                 table.insert(
                     data.cmd, 
                     exe .. 
                     " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
                     " -harmonic " .. reacoma.utils.wrap_quotes(data.outputs.harmonic[i]) .. 
-                    " -maxfftsize " .. reacoma.utils.get_max_fft_size(fftsettings) ..
-                    " -maxharmfiltersize " .. hfs ..
-                    " -maxpercfiltersize " .. pfs ..
                     " -percussive " .. reacoma.utils.wrap_quotes(data.outputs.percussive[i]) ..  
-                    " -harmfiltersize " .. hfs .. 
-                    " -percfiltersize " .. pfs .. 
+                    " -harmfiltersize " .. hfs .. " " .. hfs ..
+                    " -percfiltersize " .. pfs .. " " .. pfs ..
                     " -maskingmode " .. maskingmode ..
                     " -fftsettings " .. fftsettings .. 
                     " -numframes " .. data.item_len_samples[i] .. 
@@ -89,12 +87,9 @@ if num_selected_items > 0 then
                     exe .. 
                     " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
                     " -harmonic " .. reacoma.utils.wrap_quotes(data.outputs.harmonic[i]) ..
-                    " -maxfftsize " .. reacoma.utils.get_max_fft_size(fftsettings) ..
-                    " -maxharmfiltersize " .. hfs ..
-                    " -maxpercfiltersize " .. pfs .. 
                     " -percussive " .. reacoma.utils.wrap_quotes(data.outputs.percussive[i]) ..  
-                    " -harmfiltersize " .. hfs .. 
-                    " -percfiltersize " .. pfs .. 
+                    " -harmfiltersize " .. hfs .. " " .. hfs ..
+                    " -percfiltersize " .. pfs .. " " .. pfs ..
                     " -maskingmode " .. maskingmode .. 
                     " -harmthresh " .. hthresh ..
                     " -fftsettings " .. fftsettings .. 
@@ -109,13 +104,10 @@ if num_selected_items > 0 then
                     exe .. 
                     " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
                     " -harmonic " .. reacoma.utils.wrap_quotes(data.outputs.harmonic[i]) ..
-                    " -maxfftsize " .. reacoma.utils.get_max_fft_size(fftsettings) ..
-                    " -maxharmfiltersize " .. hfs ..
-                    " -maxpercfiltersize " .. pfs .. 
                     " -percussive " .. reacoma.utils.wrap_quotes(data.outputs.percussive[i]) .. 
                     " -residual " .. reacoma.utils.wrap_quotes(data.outputs.residual[i]) .. 
-                    " -harmfiltersize " .. hfs .. 
-                    " -percfiltersize " .. pfs .. 
+                    " -harmfiltersize " .. hfs .. " " .. hfs ..
+                    " -percfiltersize " .. pfs .. " " .. pfs ..
                     " -maskingmode " .. maskingmode .. 
                     " -harmthresh " .. hthresh .. 
                     " -percthresh " .. pthresh ..
@@ -126,6 +118,7 @@ if num_selected_items > 0 then
             end
         end
         
+
         for i=1, num_selected_items do
             reacoma.utils.cmdline(data.cmd[i])
             reacoma.layers.exist(i, data)

@@ -29,7 +29,7 @@ if num_selected_items > 0 then
         local trackmagrange = params[6]
         local trackprob = params[7]
         local bandwidth = params[8]
-        local fftsettings = params[9]
+        local fftsettings = reacoma.utils.form_fft_string(params[9])
         local mintracklen = params[10]
 
         local data = reacoma.layers.container
@@ -57,7 +57,6 @@ if num_selected_items > 0 then
                 exe .. 
                 " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
                 " -sines " .. reacoma.utils.wrap_quotes(data.outputs.sines[i]) ..
-                " -maxfftsize " .. reacoma.utils.get_max_fft_size(fftsettings) ..
                 " -residual " .. reacoma.utils.wrap_quotes(data.outputs.residual[i]) .. 
                 " -birthhighthreshold " .. bhthresh ..
                 " -birthlowthreshold " .. blthresh ..

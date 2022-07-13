@@ -26,7 +26,7 @@ if num_selected_items > 0 then
         local minslicelength = params[3]
         local filtersize = params[4]
         local framedelta = params[5]
-        local fftsettings = params[6]
+        local fftsettings = reacoma.utils.form_fft_string(params[6])
 
         local data = reacoma.slicing.container
 
@@ -36,7 +36,6 @@ if num_selected_items > 0 then
             local cmd = exe .. 
             " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
             " -indices " .. reacoma.utils.wrap_quotes(data.tmp[i]) ..
-            " -maxfftsize " .. reacoma.utils.get_max_fft_size(fftsettings) .. 
             " -metric " .. metric .. 
             " -minslicelength " .. minslicelength ..
             " -threshold " .. threshold .. 

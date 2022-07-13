@@ -76,6 +76,12 @@ utils.get_max_fft_size = function(fft_string)
     end
 end
 
+utils.form_fft_string = function(fftsettings)
+    -- always append -1 so that maxfftsize matches fft
+    local split = utils.split_space(fftsettings)
+    return string.format('%d %d %d -1', split[1], split[2], split[3])
+end
+
 utils.uuid = function(idx)
     -- Generates a universally unique identifier string
     -- Increases uniqueness by appending a number <idx>
