@@ -64,56 +64,40 @@ if num_selected_items > 0 then
                 ) 
             end
 
-            -- TODO: this is dumb and has a lot of duplicated code
+            local cmdline_base = exe .. 
+            " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
+            " -harmonic " .. reacoma.utils.wrap_quotes(data.outputs.harmonic[i]) .. 
+            " -percussive " .. reacoma.utils.wrap_quotes(data.outputs.percussive[i]) ..  
+            " -harmfiltersize " .. hfs .. " " .. hfs ..
+            " -percfiltersize " .. pfs .. " " .. pfs ..
+            " -numframes " .. data.item_len_samples[i] .. 
+            " -startframe " .. data.take_ofs_samples[i] ..
+            " -fftsettings " .. fftsettings
+
             if maskingmode == "0" then
                 table.insert(
                     data.cmd, 
-                    exe .. 
-                    " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
-                    " -harmonic " .. reacoma.utils.wrap_quotes(data.outputs.harmonic[i]) .. 
-                    " -percussive " .. reacoma.utils.wrap_quotes(data.outputs.percussive[i]) ..  
-                    " -harmfiltersize " .. hfs .. " " .. hfs ..
-                    " -percfiltersize " .. pfs .. " " .. pfs ..
-                    " -maskingmode " .. maskingmode ..
-                    " -fftsettings " .. fftsettings .. 
-                    " -numframes " .. data.item_len_samples[i] .. 
-                    " -startframe " .. data.take_ofs_samples[i]
+                    cmdline_base ..
+                    " -maskingmode " .. maskingmode
                 )
             end
 
             if maskingmode == "1" then
                 table.insert(
                     data.cmd, 
-                    exe .. 
-                    " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
-                    " -harmonic " .. reacoma.utils.wrap_quotes(data.outputs.harmonic[i]) ..
-                    " -percussive " .. reacoma.utils.wrap_quotes(data.outputs.percussive[i]) ..  
-                    " -harmfiltersize " .. hfs .. " " .. hfs ..
-                    " -percfiltersize " .. pfs .. " " .. pfs ..
-                    " -maskingmode " .. maskingmode .. 
-                    " -harmthresh " .. hthresh ..
-                    " -fftsettings " .. fftsettings .. 
-                    " -numframes " .. data.item_len_samples[i] .. 
-                    " -startframe " .. data.take_ofs_samples[i]
+                    cmdline_base ..
+                    " -maskingmode " .. maskingmode ..
+                    " -harmthresh " .. hthresh
                 )
             end
             
             if maskingmode == "2" then
                 table.insert(
                     data.cmd, 
-                    exe .. 
-                    " -source " .. reacoma.utils.wrap_quotes(data.full_path[i]) .. 
-                    " -harmonic " .. reacoma.utils.wrap_quotes(data.outputs.harmonic[i]) ..
-                    " -percussive " .. reacoma.utils.wrap_quotes(data.outputs.percussive[i]) .. 
-                    " -residual " .. reacoma.utils.wrap_quotes(data.outputs.residual[i]) .. 
-                    " -harmfiltersize " .. hfs .. " " .. hfs ..
-                    " -percfiltersize " .. pfs .. " " .. pfs ..
+                    cmdline_base ..
                     " -maskingmode " .. maskingmode .. 
                     " -harmthresh " .. hthresh .. 
-                    " -percthresh " .. pthresh ..
-                    " -fftsettings " .. fftsettings .. 
-                    " -numframes " .. data.item_len_samples[i] .. 
-                    " -startframe " .. data.take_ofs_samples[i]
+                    " -percthresh " .. pthresh
                 )
             end
         end
